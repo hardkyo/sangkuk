@@ -1,18 +1,19 @@
-package com.kitri.member.service;
+package com.kitri.member.model.dao;
 
 import java.util.List;
 
 import com.kitri.member.model.MemberDetailDto;
 import com.kitri.member.model.MemberDto;
 import com.kitri.member.model.ZipDto;
+import com.sun.javafx.collections.MappingChange.Map;
 
-public interface MemberService {
+public interface MemberDao {
 	
 	int idChech(String id);
 	List<ZipDto> zipSearch(String dong); //우편번호
 	int register(MemberDetailDto memberdetaildto);
 	
-	MemberDto login(String id, String pass);
+	MemberDto login(Map<String, String> map);
 	
 	MemberDetailDto getMember(String id);
 	int modify(MemberDetailDto memberdetaildto);
