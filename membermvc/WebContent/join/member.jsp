@@ -3,7 +3,7 @@
 
 
 <%
-	String root = request.getContentType();
+	String root = request.getContextPath();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -27,25 +27,17 @@
 			alert("비밀번호 확인!");
 			return;
 		} else {
-			document.joinform.action = "/memberbean/join/register.jsp";
+			document.joinform.action = "<%=root%>/join/register.jsp";
 			document.joinform.submit();
 		}
 	}
 
 	function openzip() {
-		window
-				.open(
-						"",
-						"",
-						"top=200, left=300, width=400, height=300, menubar=no, status=no, toolbar=no, location=no, scrollbars=yes");
+		window.open("<%=root%>/user?act=mvzip","zip","top=200, left=300, width=400, height=300, menubar=no, status=no, toolbar=no, location=no, scrollbars=yes");
 	}
-
+	
 	function openidcheck() {
-		window
-				.open(
-						"",
-						"",
-						"top=200, left=300, width=400, height=180, menubar=no, status=no, toolbar=no, location=no, scrollbars=no");
+		window.open("<%=root%>/user?act=mvidck","idck","top=200, left=300, width=400, height=180, menubar=no, status=no, toolbar=no, location=no, scrollbars=no");
 	}
 </script>
 </head>
@@ -77,7 +69,7 @@
 				<tr>
 					<td class="td2">아이디(ID)<font color="red">*</font></td>
 					<td class="td4"><input type="text" name="id" id="id" value=""
-						size="12"> <input type="button" value="아이디중복검사">
+						size="12"> <input type="button" value="아이디중복검사" onclick="javascript:openidcheck">
 						&nbsp;&nbsp;<font color="#3cb371">4~12</font>자이내 영문이나 숫자(영문은 대소문자를
 						구별하므로 주의해주세요</td>
 				</tr>
@@ -153,7 +145,7 @@
 					<td class="td4"><input type="text" name="zip1" value=""
 						size="5" maxlength="3"> - <input type="text" name="zip2"
 						value="" size="5" maxlength="3"> <input type="button"
-						value="우편번호검색"></td>
+						value="우편번호검색"  onclick="javascript:openzipcheck"></td>
 				</tr>
 				<tr>
 					<td class="td1">주소<font color="red">*</font></td>

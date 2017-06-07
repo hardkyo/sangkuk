@@ -15,19 +15,22 @@ public class MemberController extends HttpServlet {
 			throws ServletException, IOException {
 		
 		String root = request.getContextPath();
-
 		String act = request.getParameter("act");
+		String path = "/index.jsp";
+		
 		if ("mvjoin".equals(act)) { // null 포인트 익셉션 발생 안함
-			response.sendRedirect(root + "/join/member.jsp");
+			path = "/join/member.jsp";
 		} else if ("mvlogin".equals(act)) {
-			response.sendRedirect(root + "/login/login.jsp");
-		} else if ("".equals(act)) {
-
-		} else if ("".equals(act)) {
-
+			path = "/login/login.jsp";
+		} else if ("mvidck".equals(act)) {
+			path = "/join/idcheck.jsp";
+		} else if ("mvzip".equals(act)) {
+			path = "/join/zipsearch.jsp";
 		} else if ("".equals(act)) {
 
 		}
+		
+		response.sendRedirect(root + path);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
