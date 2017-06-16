@@ -38,6 +38,7 @@ public class ReboardController extends HttpServlet {
 			path += queryString;
 			PageMove.forward(path, request, response);
 		} else if ("view".equals(act)) {
+			//
 			path = BoardActionFactory.getReboardViewAction().execute(request, response);
 //			System.out.println(request.getAttribute("article"));
 			PageMove.forward(path, request, response);
@@ -45,10 +46,14 @@ public class ReboardController extends HttpServlet {
 			path = BoardActionFactory.getReboardListAction().execute(request, response);
 			path += queryString;
 			PageMove.forward(path, request, response);
-		} else if ("".equals(act)) {
-
-		} else if ("".equals(act)) {
-
+		} else if ("mvreply".equals(act)) {
+			path = BoardActionFactory.getReboardMoveReplyAction().execute(request, response);
+			path += queryString;
+			PageMove.forward(path, request, response);
+		} else if ("reply".equals(act)) {
+			path = BoardActionFactory.getReboardReplyAction().execute(request, response);
+			path += queryString;
+			PageMove.forward(path, request, response);
 		} else if ("".equals(act)) {
 
 		}

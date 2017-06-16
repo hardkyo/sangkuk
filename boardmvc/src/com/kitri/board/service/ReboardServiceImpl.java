@@ -53,7 +53,7 @@ public class ReboardServiceImpl implements ReboardService {
 
 	@Override
 	public int replyArticle(ReboardDto reboardDto) {
-		return 0;
+		return ReboardDaoImpl.getReboardDao().replyArticle(reboardDto);
 	}
 
 	@Override

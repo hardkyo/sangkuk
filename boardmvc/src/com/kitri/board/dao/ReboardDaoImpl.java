@@ -100,7 +100,7 @@ public class ReboardDaoImpl implements ReboardDao {
 				reboardDto.setStep(rs.getInt("step"));
 				reboardDto.setPseq(rs.getInt("pseq"));
 				reboardDto.setReply(rs.getInt("reply"));
-//				System.out.println(reboardDto.getContent());
+				System.out.println("movereply getARticle 호출 \n" + reboardDto.getContent());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -144,7 +144,7 @@ public class ReboardDaoImpl implements ReboardDao {
 				}else
 					sql.append("      and b." + key + " = ? \n");
 			}
-			sql.append("      ORDER BY seq desc\n");
+			sql.append("      ORDER BY r.ref desc, r.step \n");
 			sql.append("      )a\n");
 			sql.append("    where rownum <= ?\n");
 			sql.append("    )b\n");
@@ -187,7 +187,73 @@ public class ReboardDaoImpl implements ReboardDao {
 
 	@Override
 	public int replyArticle(ReboardDto reboardDto) {
-		return 0;
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = DBConnection.getConnection();
+			conn.setAutoCommit(false);
+			
+			ReboardDto parentDto = this.getArticle(reboardDto.getPseq());
+			if (parentDto != null) {
+//			System.out.println(reboardDto.getBcode());
+				StringBuffer update_step = new StringBuffer();
+				update_step.append("update reboard set \n");
+				update_step.append("step = step + 1 \n");
+				update_step.append("where ref = ? and step > ? ");
+				pstmt = conn.prepareStatement(update_step.toString());
+				pstmt.setInt(1, parentDto.getRef());
+				pstmt.setInt(2, parentDto.getStep());
+				cnt = pstmt.executeUpdate();
+				pstmt.close();
+				
+	
+				StringBuffer insert_reply = new StringBuffer();
+				insert_reply.append("insert all \n");
+				insert_reply.append("	into board (seq, name, id, email, subject, content, hit, logtime, bcode) \n");
+				insert_reply.append("	values(?, ?, ?, ?, ?, ?, 0, sysdate, ?) \n");
+				insert_reply.append("	into reboard (rseq, seq, ref, lev, step, pseq, reply) \n");
+				insert_reply.append("	values (reboard_rseq.nextval, ?, ?, ?, ?, ?, 0) \n");
+				insert_reply.append("select * from dual \n");
+				pstmt = conn.prepareStatement(insert_reply.toString());
+				int idx = 0;
+				pstmt.setInt(++idx, reboardDto.getSeq());
+				pstmt.setString(++idx, reboardDto.getName());
+				pstmt.setString(++idx, reboardDto.getId());
+				pstmt.setString(++idx, reboardDto.getEmail());
+				pstmt.setString(++idx, reboardDto.getSubject());
+				pstmt.setString(++idx, reboardDto.getContent());
+				pstmt.setInt(++idx, reboardDto.getBcode());
+				pstmt.setInt(++idx, reboardDto.getSeq());
+				pstmt.setInt(++idx, parentDto.getRef());
+				pstmt.setInt(++idx, parentDto.getLev()+1);
+				pstmt.setInt(++idx, parentDto.getStep()+1);
+				pstmt.setInt(++idx, parentDto.getSeq());
+				cnt = pstmt.executeUpdate();
+				pstmt.close();
+				
+				StringBuffer update_reply = new StringBuffer();
+				update_reply.append("update reboard set \n");
+				update_reply.append("reply = reply + 1 \n");
+				update_reply.append("where seq = ? ");
+				pstmt = conn.prepareStatement(update_reply.toString());
+				pstmt.setInt(1, parentDto.getSeq());
+				cnt = pstmt.executeUpdate(); //pstmt를 실행해라~
+				conn.commit();
+				cnt = 1; // 마지막에 cnt가 0만 아니게끔 넘기도록 한다. 
+			}
+		} catch (SQLException e) { //exception 발생 시 대처할 수 있는 구문
+			e.printStackTrace();
+			try {
+				conn.rollback();
+				cnt = 0;
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		} finally {
+			DBClose.close(conn, pstmt);
+		}
+		return cnt;
 	}
 
 	@Override

@@ -1,6 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
-<%@ include file="/common/public.jsp"%>
+	pageEncoding="EUC-KR" 
+	import="com.kitri.board.model.ReboardDto"
+%>
+<%@ include file="/common/public.jsp" %>
+<%
+ReboardDto reboardDto = (ReboardDto) request.getAttribute("article");
+if(reboardDto != null) {
+%>
+<script type="text/javascript">
+function writeArticle(){
+	if(document.writeForm.subject.value == ""){
+		alert("제목을 입력하세요");
+		return;
+	}else if(document.writeForm.content.value == ""){
+		alert("내용을 입력하세요");
+		return;
+	}else{
+		
+		document.writeForm.action = "<%=root%>/reboard";
+		document.writeForm.submit();
+	}
+}
+</script>
 <!-- title -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>
@@ -32,7 +53,17 @@
 	style="margin: 0px">
 <div id="attach_file_hdn"></div>
 
-<input type="hidden" name="" value="">
+<input type="hidden" name="act" value="reply">
+<input type="hidden" name="bcode" value="<%=bcode%>">
+<input type="hidden" name="pg" value="1">
+<input type="hidden" name="key" value="">
+<input type="hidden" name="word" value="">
+<%--
+<input type="hidden" name="ref" value="<%=reboardDto.getRef() %>">
+<input type="hidden" name="lev" value="<%=reboardDto.getLev() %>">
+<input type="hidden" name="step" value="<%=reboardDto.getStep() %>">
+--%>
+<input type="hidden" name="pseq" value="<%=reboardDto.getSeq() %>">
 
 <table border="0" cellpadding="5" cellspacing="0" width="630"
 	style="table-layout: fixed">
@@ -41,7 +72,8 @@
 		<td width="95" nowrap style="padding-left: 8px; padding-top: 10px"><img
 			src="<%=root%>/img/board/e_dot.gif" width="4" height="4" border="0"
 			align="absmiddle"> <b>제목</b></td>
-		<td colspan="5"><input name="subject" id="subject" type="text"
+		<td colspan="5">
+			<input name="subject" id="subject" type="text" value="Re : <%=reboardDto.getSubject() %>"
 			size="76" maxlength="150" class="inp_02" style="width: 300px"
 			value=""><img src="<%=root%>/img/board/i_info.gif" width="12"
 			height="11" border="0" align="absmiddle" vspace="8"
@@ -51,8 +83,13 @@
 	<tr>
 		<td width="620" nowrap style="padding-left: 8px; padding-top: 10px"
 			colspan="5"><img src="<%=root%>/img/board/e_dot.gif" width="4"
-			height="4" border="0" align="absmiddle"> <b>글내용</b> <textarea
-			name="content" class="inp_02" cols="67" rows="25" scrollbars="no"></textarea>
+			height="4" border="0" align="absmiddle"> <b>글내용</b> 
+			<textarea name="content" class="inp_02" cols="67" rows="25" scrollbars="no">
+
+-----------------------------------------------------[원글]
+
+<%=reboardDto.getContent() %>
+</textarea>
 		</td>
 	</tr>
 </table>
@@ -83,3 +120,13 @@
 <br>
 </body>
 </html>
+<%
+} else {
+%>
+<script>
+alert("부적절한 URL접근입니다.");
+document.location.href = "<%=root%>";
+</script>
+<%	
+}
+%>
