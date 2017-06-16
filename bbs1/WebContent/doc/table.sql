@@ -24,3 +24,5 @@ create table bbs( //my sqlπÆ ¿€º∫
    bbsAvailable int,
    primary key (bbsID)
    );
+   
+   
