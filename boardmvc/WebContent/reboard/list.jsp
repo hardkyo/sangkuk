@@ -1,8 +1,7 @@
-<%@page import="com.sun.org.glassfish.gmbal.IncludeSubclass"%>
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"
-	import="com.kitri.util.PageNavigation,java.util.List,com.kitri.board.model.ReboardDto"%>
-
+	import="com.kitri.util.PageNavigation,java.util.List"
+	import="com.kitri.member.model.MemberDto,com.kitri.board.model.ReboardDto"%>
 <%@ include file="/common/public.jsp"%>
 <%
 	List<ReboardDto> list = (List<ReboardDto>) request.getAttribute("articleList");
@@ -11,14 +10,24 @@
 %>
 <script type="text/javascript">
 function searchArticle() {
-	if (document.searchForm.word.value == "") {
-		alert("검색어를 입력하시오");
+	if(document.searchForm.word.value == "") {
+		alert("검색어입력!!!!");
 		return;
-	}else {
-		document.searchForm.action ="<%=root%>/reboard";
+	} else {
+		document.searchForm.action = "<%=root%>/reboard";
 		document.searchForm.submit();
-		}
+	}
 }
+
+function myArticle(myid) {
+		document.commonForm.act.value="list";
+		document.commonForm.bcode.value="<%=bcode%>";
+		document.commonForm.pg.value="1";
+		document.commonForm.key.value="id";
+		document.commonForm.word.value="myid";
+		document.commonForm.action = "<%=root%>/reboard";
+		document.commonForm.submit();
+}               
 </script>
 <!-- title start -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -94,13 +103,13 @@ function searchArticle() {
 			<td nowrap class="onetext" style="padding-right: 5px"></td>
 			<!--td>
      
-     			</td-->
+     </td-->
 			<td style="word-break: break-all;"><a
 				href="javascript:viewArticle('<%=reboardDto.getSeq()%>');"
 				class="link_board_03"><%=reboardDto.getSubject()%>&nbsp;&nbsp;&nbsp;</a></td>
 			<td></td>
 			<td style="word-break: break-all;"><a href="javascript:;"
-				onclick="showSideView();" class="link_board_04"><%=reboardDto.getName()%></a></td>
+				onClick="showSideView();" class="link_board_04"><%=reboardDto.getName()%></a></td>
 			<td></td>
 			<td align="center" class="text_gray"><%=reboardDto.getHit()%></td>
 			<td></td>
@@ -156,7 +165,6 @@ function searchArticle() {
 <!-- 검색 영역-->
 <form name="searchForm" method="get" action="" onsubmit="return false;"
 	style="margin: 0px">
-	<!--  onsubmit="return false;" (엄청 중요!!)-->
 	<input type="hidden" name="act" value="list"> <input
 		type="hidden" name="bcode" value="<%=bcode%>"> <input
 		type="hidden" name="pg" value="1">
@@ -166,21 +174,25 @@ function searchArticle() {
 		</tr>
 		<tr>
 			<td width="50%"></td>
-			<td nowrap><select name="key" onchange="javascript:ch()"
-				class="inp">
+			<td nowrap><select name="key" class="inp">
 					<option value="subject">글제목
 					<option value="name">글쓴이
 					<option value="seq">글번호
 			</select> <span id="sear1"> <input type="text" name="word" size="22"
-					class="inp" style="margin-top: -19px;" onkeypress="javascript:if(event.keyCode == 13) {searchArticle()}">
-			</span> <a href="javascript:searchArticle();"><img
+					class="inp" style="margin-top: -19px;"
+					onkeypress="javascript:if(event.keyCode == 13) {searchArticle();}"></span>
+				<a href="javascript:searchArticle();"><img
 					src="<%=root%>/img/board/sbtn_s.gif" width="32" height="18"
-					border="0" align="absmiddle" alt="검색"></a> 
-			<input type="image"src="<%=root%>/img/board/sbtn_s.gif" onclick="javascript:searchArticle();"> 
-					<a href="javascript:goMyList('안효인')"> <img
+					border="0" align="absmiddle" alt="검색"></a> <input type="image"
+				src="<%=root%>/img/board/sbtn_s.gif"
+				onclick="javascript:searchArticle();"> <%
+ 	MemberDto memberDto = (MemberDto) session.getAttribute("loginInfo");
+ 		if (memberDto != null) {
+ %> <a href="javascript:myArticle('<%=memberDto.getId()%>')"><img
 					src="<%=root%>/img/board/sbtn_mytext.gif" width="82" height="20"
-					align="absmiddle" alt="내가 쓴 글 보기">
-			</a><br></td>
+					align="absmiddle" alt="내가 쓴 글 보기"></a><br> <%
+ 	}
+ %></td>
 			<td width="50%" align="right"><a href="#"><img
 					src="<%=root%>/img/board/sbtn_top.gif" width="24" height="11"
 					align="absmiddle" alt="TOP"></a><br></td>
@@ -194,8 +206,11 @@ function searchArticle() {
 %>
 <script>
 alert("부적절한 URL접근입니다.");
-	document.location.href = "<%=root%>";
+document.location.href = "<%=root%>";
 </script>
 <%
 	}
 %>
+
+
+
