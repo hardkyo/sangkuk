@@ -2,25 +2,42 @@ package com.kitri.util.db;
 
 import java.sql.*;
 
+import javax.naming.*;
+import javax.sql.DataSource;
+
 public class DBConnection {
-	static {
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-//			System.out.println("드라이버로딩 성공");
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+
+//	JDBC 1.0
+//	static {
+//		try {
+//			Class.forName("oracle.jdbc.driver.OracleDriver");
+//		} catch (ClassNotFoundException e) {
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	public static Connection getConnection() {
+//		Connection conn = null;
+//		try {
+//			conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.18.31:1521:orcl", "kitri", "kitri");
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return conn;
+//	}
 	
+//	JDBC 2.0 >> Connection Pool
 	public static Connection getConnection() {
-		 Connection conn = null;
-		 try {
-			conn= DriverManager.getConnection("jdbc:oracle:thin:@192.168.18.28:1521:orcl","kitri","kitri");
-//			System.out.println("db연결성공");
+		Connection conn = null;
+		try {
+			Context ctx = new InitialContext();
+			Context rootCtx = (Context) ctx.lookup("java:comp/env/");
+			DataSource ds = (DataSource) rootCtx.lookup("jdbc/kitri");
+			conn = ds.getConnection();
+			System.out.println("연결???");
+		} catch (NamingException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return conn;

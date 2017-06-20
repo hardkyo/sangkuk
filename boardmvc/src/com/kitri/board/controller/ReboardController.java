@@ -54,8 +54,14 @@ public class ReboardController extends HttpServlet {
 			path = BoardActionFactory.getReboardReplyAction().execute(request, response);
 			path += queryString;
 			PageMove.forward(path, request, response);
-		} else if ("".equals(act)) {
-
+		} else if ("mvmodify".equals(act)) {
+			path = BoardActionFactory.getReboardMoveModifyAction().execute(request, response);
+			path += queryString;
+			PageMove.forward(path, request, response);
+		} else if ("modify".equals(act)) {
+//			path = BoardActionFactory.getReboardReplyAction().execute(request, response);
+//			path += queryString;
+//			PageMove.forward(path, request, response);
 		}
 	}
 

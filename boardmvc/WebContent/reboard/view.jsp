@@ -21,6 +21,19 @@ function moveReply(seq) {
 	document.commonForm.action = "<%=root%>/reboard";
 	document.commonForm.submit();
 }
+
+function moveModify(seq) {
+	document.commonForm.act.value = "mvmodify";
+	document.commonForm.bcode.value = "<%=bcode%>";
+	document.commonForm.pg.value = "1";
+	document.commonForm.key.value = "";
+	document.commonForm.word.value = "";
+	document.commonForm.seq.value = seq;
+	//document.commonForm.key.value = "<%=key%>";
+	//document.commonForm.word.value = "<%=word%>";
+	document.commonForm.action = "<%=root%>/reboard";
+	document.commonForm.submit();
+}
 </script>
 <!-- title -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">

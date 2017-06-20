@@ -258,7 +258,33 @@ public class ReboardDaoImpl implements ReboardDao {
 
 	@Override
 	public int modifyArticle(ReboardDto reboardDto) {
-		return 0;
+		int cnt = 0;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = DBConnection.getConnection();
+			conn.setAutoCommit(false);
+			
+			ReboardDto parentDto = this.getArticle(reboardDto.getPseq());
+			if (parentDto != null) {
+//			System.out.println(reboardDto.getBcode());
+				StringBuffer update_step = new StringBuffer();
+				update_step.append("update reboard set \n");
+				update_step.append("subject=?, content=?\n");
+				update_step.append("where seq = ?");
+				pstmt = conn.prepareStatement(update_step.toString());
+				pstmt.setString(1, parentDto.getSubject());
+				pstmt.setString(2, parentDto.getContent());
+				pstmt.setInt(3, parentDto.getSeq());
+				cnt = pstmt.executeUpdate();
+				
+			}
+		} catch (SQLException e) { //exception 발생 시 대처할 수 있는 구문
+			e.printStackTrace();
+		} finally {
+			DBClose.close(conn, pstmt);
+		}
+		return cnt;
 	}
 
 	@Override

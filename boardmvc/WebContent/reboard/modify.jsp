@@ -1,6 +1,37 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
-<%@ include file="/common/public.jsp"%>
+	pageEncoding="EUC-KR" 
+	import="com.kitri.board.model.ReboardDto"
+%>
+<%@ include file="/common/public.jsp" %>
+<%
+ReboardDto reboardDto = (ReboardDto) request.getAttribute("article");
+if(reboardDto != null) {
+%>
+<link rel="stylesheet" type="text/css" HREF="<%=root%>/css/alice.css">
+	<link rel="stylesheet" type="text/css" HREF="<%=root%>/css/oz.css">
+	<script type="text/javascript" src="<%=root%>/js/prototype.js"></script>
+	<script type="text/javascript" src="<%=root%>/js/extprototype.js"></script>	
+	<script type="text/javascript" src="<%=root%>/js/oz.js"></script>	
+	<script type="text/javascript" src="<%=root%>/js/alice.js"></script>
+<script type="text/javascript">
+var alice;
+Event.observe(window, "load", function() {
+	alice = Web.EditorManager.instance("test",{type:'detail',width:600,height:300,limit:10,family:'돋움',size:'13px'});
+});	
+function writeArticle(){
+	if(document.writeForm.subject.value == ""){
+		alert("제목을 입력하세요");
+		return;
+	}else if(alice.getContent() == ""){
+		alert("내용을 입력하세요");
+		return;
+	}else{
+		document.writeForm.content.value = alice.getContent();
+		document.writeForm.action = "<%=root%>/reboard";
+		document.writeForm.submit();
+	}
+}
+</script>
 <!-- title -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 	<tr>
@@ -20,7 +51,7 @@
 	<tr>
 		<td><img src="<%=root%>/img/board/icon_arrow_04.gif" width="4"
 			height="11" border="0" align="absmiddle" vspace="4"></td>
-		<td width="100%" style="padding-left: 4px"><b>글수정</b></td>
+		<td width="100%" style="padding-left: 4px"><b>답글쓰기</b></td>
 	</tr>
 	<tr>
 		<td width="630" colspan="2" height="2" class="bg_board_title_02"></td>
@@ -32,16 +63,27 @@
 	style="margin: 0px">
 <div id="attach_file_hdn"></div>
 
-<input type="hidden" name="" value="">
+<input type="hidden" name="act" value="reply">
+<input type="hidden" name="bcode" value="<%=bcode%>">
+<input type="hidden" name="pg" value="1">
+<input type="hidden" name="key" value="">
+<input type="hidden" name="word" value="">
+<input type="hidden" name="content" value="">
+<%--
+<input type="hidden" name="ref" value="<%=reboardDto.getRef() %>">
+<input type="hidden" name="lev" value="<%=reboardDto.getLev() %>">
+<input type="hidden" name="step" value="<%=reboardDto.getStep() %>">
+--%>
+<input type="hidden" name="pseq" value="<%=reboardDto.getSeq() %>">
 
 <table border="0" cellpadding="5" cellspacing="0" width="630"
 	style="table-layout: fixed">
 
 	<tr valign="top">
-		<td width="95" nowrap style="padding-left: 8px; padding-top: 10px"><img
-			src="<%=root%>/img/board/e_dot.gif" width="4" height="4" border="0"
-			align="absmiddle"> <b>제목</b></td>
-		<td colspan="5"><input name="subject" id="subject" type="text"
+		<td width="95" nowrap style="padding-left: 8px; padding-top: 10px">
+		<img src="#" align="absmiddle"> <b>제목</b></td>
+		<td colspan="5">
+			<input name="subject" id="subject" type="text" value="<%=reboardDto.getSubject() %>"
 			size="76" maxlength="150" class="inp_02" style="width: 300px"
 			value=""><img src="<%=root%>/img/board/i_info.gif" width="12"
 			height="11" border="0" align="absmiddle" vspace="8"
@@ -51,8 +93,10 @@
 	<tr>
 		<td width="620" nowrap style="padding-left: 8px; padding-top: 10px"
 			colspan="5"><img src="<%=root%>/img/board/e_dot.gif" width="4"
-			height="4" border="0" align="absmiddle"> <b>글내용</b> <textarea
-			name="content" class="inp_02" cols="67" rows="25" scrollbars="no"></textarea>
+			height="4" border="0" align="absmiddle"> <b>글내용</b> 
+			<textarea name="test" >
+<%=reboardDto.getContent() %>
+</textarea>
 		</td>
 	</tr>
 </table>
@@ -72,10 +116,10 @@
 	<tr>
 		<td align="center"><a href="javascript:writeArticle();"><img
 			src="<%=root%>/img/board/btn_register.gif" width="42" height="21"
-			border="0" name="register" alt="등록"></a> <a
+			border="0" name="register" value="" alt="등록"></a> <a
 			href="javascript:history.back();"><img
 			src="<%=root%>/img/board/b_cancel.gif" width="42" height="21"
-			border="0" name="cencel" alt="취소"></a></td>
+			border="0" name="cencel" value="" alt="취소"></a></td>
 	</tr>
 </table>
 </form>
@@ -83,3 +127,13 @@
 <br>
 </body>
 </html>
+<%
+} else {
+%>
+<script>
+alert("부적절한 URL접근입니다.");
+document.location.href = "<%=root%>";
+</script>
+<%	
+}
+%>

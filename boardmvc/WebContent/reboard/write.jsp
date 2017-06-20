@@ -1,16 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR" import="com.kitri.util.*"%>
 <%@ include file="/common/public.jsp"%>
+	<link rel="stylesheet" type="text/css" HREF="<%=root%>/css/alice.css">
+	<link rel="stylesheet" type="text/css" HREF="<%=root%>/css/oz.css">
+	<script type="text/javascript" src="<%=root%>/js/prototype.js"></script>
+	<script type="text/javascript" src="<%=root%>/js/extprototype.js"></script>	
+	<script type="text/javascript" src="<%=root%>/js/oz.js"></script>	
+	<script type="text/javascript" src="<%=root%>/js/alice.js"></script>
 
 <script type="text/javascript">
+var alice;
+Event.observe(window, "load", function() {
+	alice = Web.EditorManager.instance("test",{type:'detail',width:600,height:300,limit:10,family:'돋움',size:'13px'});
+});	
 function writeArticle(){
 	if(document.writeForm.subject.value == ""){
 		alert("제목을 입력하세요");
 		return;
-	}else if(document.writeForm.content.value == ""){
+	}else if(alice.getContent() == ""){
 		alert("내용을 입력하세요");
 		return;
 	}else{
+		document.writeForm.content.value = alice.getContent();
 		document.writeForm.action = "<%=root%>/reboard";
 		document.writeForm.submit();
 	}
@@ -53,6 +64,7 @@ function writeArticle(){
 <input type="hidden" name="pg" value="1">
 <input type="hidden" name="key" value="">
 <input type="hidden" name="word" value="">
+<input type="hidden" name="content" value="">
 
 <table border="0" cellpadding="5" cellspacing="0" width="630"
 	style="table-layout: fixed">
@@ -71,8 +83,8 @@ function writeArticle(){
 	<tr>
 		<td width="620" nowrap style="padding-left: 8px; padding-top: 10px"
 			colspan="5"><img src="<%=root%>/img/board/e_dot.gif" width="4"
-			height="4" border="0" align="absmiddle"> <b>글내용</b> <textarea
-			name="content" class="inp_02" cols="67" rows="25" scrollbars="no"></textarea>
+			height="4" border="0" align="absmiddle"> <b>글내용</b> 
+			<textarea name="test"></textarea>
 		</td>
 	</tr>
 </table>

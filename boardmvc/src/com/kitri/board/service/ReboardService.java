@@ -15,6 +15,8 @@ public interface ReboardService {
 	int deleteArticle(int seq); // seq -> ±Û¹øÈ£
 	
 	
+	
+	
  }
 
 //10 aaaaaa   10 0 0 0 1
