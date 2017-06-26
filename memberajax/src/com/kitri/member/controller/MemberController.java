@@ -68,6 +68,7 @@ public class MemberController extends HttpServlet {
 			memberDetailDto.setTel1(request.getParameter("tel1"));
 			memberDetailDto.setTel2(request.getParameter("tel2"));
 			memberDetailDto.setTel3(request.getParameter("tel3"));
+			
 			int cnt = memberService.register(memberDetailDto);
 			if(cnt != 0) {
 				path = "/join/registerok.jsp";

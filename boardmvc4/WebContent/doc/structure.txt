@@ -1,0 +1,123 @@
+boardmvc
+
+	- src
+		- com.kitri.action
+			Action.java (I) - String execute(request, response); 페이지 어디로 갈지 controller에게 요청해주기 때문에 String 
+			
+		- com.kitri.admin.board.controller
+			BoardAdminController.java ( servlet : /boardadmin )
+			
+		- com.kitri.admin.board.action : com.kitri.action에 있는 interface 구현
+			CategoryListAction.java
+			CategoryMakeAction.java
+			BoardTypeListAction.java
+			BoardMakeAction.java
+			
+			BoardListAction.java ( 왼쪽에 있는 게시판 목록 )
+			
+		- com.kitri.admin.board.model
+			BoardTypeDto.java
+			CategoryDto.java
+			BoardListDto.java
+
+		- com.kitri.admin.board.service
+      		BoardAdminService.java (I)
+      		BoardAdminServiceImpl.java
+			
+		
+		- com.kitri.admin.board.dao
+      		BoardAdminDao.java (I)
+     		BoardAdminDaoImpl.java
+			
+		- com.kitri.board.controller
+			boardController.java (servlet : /board)
+			ReboardController.java (servlet : /reboard)
+			AlbumController.java (servlet : /album)
+			BbsController.java (servlet : /bbs)
+			MemoController.java (servlet : /memo)
+			
+		- com.kitri.board.model
+			BoardDto.java
+			ReboardDto.java
+			AlbumDto.java
+			BbsDto.java
+			MemoDto.java
+			
+		- com.kitri.board.service
+     		CommonService.java (I)
+    		CommonServiceImpl.java
+    		BoardService.java (I)
+      		BoardServiceImpl.java
+      		ReboardService.java (I)
+      		ReboardServiceImpl.java
+      		AlbumService.java (I)
+      		AlbumServiceImpl.java
+      		BbsService.java (I)
+      		BbsServiceImpl.java
+      		MemoService.java (I)
+      		MemoServiceImpl.java
+			
+		- com.kitri.board.dao
+		      CommonDao.java (I)
+		      CommonDaoImpl.java
+		      BoardDao.java (I)
+		      BoardDaoImpl.java
+		      ReboardDao.java (I)
+		      ReboardDaoImpl.java
+		      AlbumDao.java (I)
+		      AlbumDaoImpl.java
+		      BbsDao.java (I)
+		      BbsDaoImpl.java
+		      MemoDao.java (I)
+		      MemoDaoImpl.java
+			
+		- com.kitri.reboard.action
+			ReboardWriteAction.java : 새글
+			ReboardListAction.java 
+			ReboardViewAction.java
+			ReboardReplyAction.java : 답글
+			ReboardModifyAction.java
+			ReboardDeleteAction.java
+		
+		
+		- com.kitri.member.model
+			MemberDto.java
+		
+		- com.kitri.factory : 모든 게시판에서 사용하기 때문에 factory까지만 씀
+			BoardAdminFactory.java
+			BoardFactory.java
+			
+		- com.kitri.util.
+			Encoding.java
+			BoardConstance.java
+			PageNavigation.java
+			
+		- com.kitri.util.db
+			DBConnection.java
+			DBClose.java
+		
+		
+	- webContent
+	
+	
+		index.jsp
+		css - *.css
+		js 	- *.js
+		img - *.jpg, *.gif, *.png
+		doc
+		
+		< jsp - view > 
+	
+		admin	관리자( 카테고리 생성, 게시판 생성 )
+		common	공통 파일 ( ex. root변수, 페이지번호, 글 번호 )
+		album 	앨범 (사진 ) 게시판
+		bbs   	자료실
+		board 	공지사항, 한줄메모게시판, 일반게시판
+		reboard 답변형 게시판
+		
+		
+		(SERVER켰을 때 처음에 server.xml - meta-inf (context.xml) - web.xml 순서로 읽어들임 )
+		
+		META-INF context.xml ( connection pooling configuration )
+		WEB-INF	 web.xml ( web editor configuration ) : 네이버 스마트 에디터는 php로 되어있어서 사용하고 싶으면 jsp로 변환해야함
+    
