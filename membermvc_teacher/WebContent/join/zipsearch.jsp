@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR" 
-    import="java.util.List,com.kitri.member.model.ZipDto"%>
-<%
-String root = request.getContextPath();
+    pageEncoding="EUC-KR" import="java.util.*,com.kitri.member.model.ZipDto"%>
+    <%
+    String root= request.getContextPath();
+    
+    String dong = (String)request.getAttribute("sdong");
 
-String dong = (String) request.getAttribute("sdong");
-%> 
+    %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -27,7 +27,6 @@ function selectzip(z1, z2, address){
 	opener.document.getElementById("zip1").value = z1;
 	opener.document.getElementById("zip2").value = z2;
 	opener.document.getElementById("addr1").value = address;
-	
 	self.close();
 }
 </script>
@@ -47,41 +46,35 @@ function selectzip(z1, z2, address){
 	<input type="button" value="검색" id="btnsearch" onclick="javascript:dongcheck();">
 	</td>
 </tr>
-<%
-if(dong == null) {
-%>
+<% if(dong ==null) { %>
 <tr>
 	<td class="td4">
 	동이름을 정확히 입력하세요.
 	</td>
 </tr>
-<%
-} else {
-	List<ZipDto> list = (List<ZipDto>) request.getAttribute("zipList");
-	int size = list.size();
-	if(size != 0) {
-		for(int i=0;i<size;i++) {
-			ZipDto zipDto = list.get(i);
+<% } else { 
+    List<ZipDto> list = (List<ZipDto>)request.getAttribute("zipList");
+    int size =list.size();
+    if (size != 0) {
+    	for(int i =0;i<size;i++){
+    		ZipDto zipDto = list.get(i);
 %>
 <tr>
 	<td class="td4">
-	<a href="javascript:selectzip('<%=zipDto.getZip1() %>', '<%=zipDto.getZip2() %>', '<%=zipDto.getSido() %> <%=zipDto.getGugun() %> <%=zipDto.getDong() %> <%=zipDto.getBunji() %>');">
+	<a href="javascript:selectzip('<%=zipDto.getZip1() %>','<%=zipDto.getZip2() %>','<%=zipDto.getSido() %> <%=zipDto.getGugun() %> <%=zipDto.getDong() %>');">
 	<%=zipDto.getZip1() %>-<%=zipDto.getZip2() %>
-	<%=zipDto.getSido() %> <%=zipDto.getGugun() %> <%=zipDto.getDong() %> <%=zipDto.getBunji() %>
+	<%=zipDto.getSido() %> <%=zipDto.getGugun() %> <%=zipDto.getDong() %>
 	</a>
 	</td>
 </tr>
-<%
-		}
-	} else {
-%>
+<% }
+} else { %>
 <tr>
 	<td class="td4">
 	<b><%=dong %></b>에 대한 검색 결과가 없습니다.
 	</td>
 </tr>
-<%
-	}
+<% } 
 }
 %>
 </table>

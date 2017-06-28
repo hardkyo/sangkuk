@@ -2,24 +2,6 @@
     <wb-module deploy-name="boardmvc4">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <dependent-module archiveName="cos.jar" deploy-path="/WEB-INF/lib/" handle="module:/resource/cos/cos">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jai_codec.jar" deploy-path="/WEB-INF/lib/" handle="module:/resource/jai_codec/jai_codec">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="jai_core.jar" deploy-path="/WEB-INF/lib/" handle="module:/resource/jai_core/jai_core">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-fileupload-1.2.jar" deploy-path="/WEB-INF/lib/" handle="module:/resource/commons-fileupload-1.2/commons-fileupload-1.2">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-io-1.3.1.jar" deploy-path="/WEB-INF/lib/" handle="module:/resource/commons-io-1.3.1/commons-io-1.3.1">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="commons-lang-2.3.jar" deploy-path="/WEB-INF/lib/" handle="module:/resource/commons-lang-2.3/commons-lang-2.3">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <property name="context-root" value="boardmvc4"/>
         <property name="java-output-path" value="/boardmvc4/build/classes"/>
     </wb-module>

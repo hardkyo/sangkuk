@@ -25,13 +25,8 @@ public class MemberController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// if(request.getMethod().equals("POST"))
-		// request.setCharacterEncoding("EUC-KR");
-
 		String root = request.getContextPath();
-
 		String act = request.getParameter("act");
-
 		String path = "/index.jsp";
 		boolean flag = false;
 		if ("mvjoin".equals(act)) {
@@ -48,99 +43,129 @@ public class MemberController extends HttpServlet {
 			path = "/join/idcheck.jsp?sid=" + sid + "&count=" + count;
 		} else if ("zipsearch".equals(act)) {
 			String sdong = Encoding.isoToEuc(request.getParameter("dong"));
-			System.out.println("검색동 ::: " + sdong);
 			List<ZipDto> list = memberService.zipSearch(sdong);
-			System.out.println("검색동 갯수 : " + list.size());
-			path = "/join/zipsearch.jsp";
+			path = "/join/zipsearch.jsp?";
 			request.setAttribute("sdong", sdong);
 			request.setAttribute("zipList", list);
-			flag = true;
+			flag= true;
 		} else if ("register".equals(act)) {
-			MemberDetailDto memberDetailDto = new MemberDetailDto();
-			memberDetailDto.setId(request.getParameter("id"));
-			memberDetailDto.setName(request.getParameter("name"));
-			memberDetailDto.setPass(request.getParameter("pass"));
-			memberDetailDto.setEmail1(request.getParameter("email1"));
-			memberDetailDto.setEmail2(request.getParameter("email2"));
-			memberDetailDto.setZip1(request.getParameter("zip1"));
-			memberDetailDto.setZip2(request.getParameter("zip2"));
-			memberDetailDto.setAddr1(request.getParameter("addr1"));
-			memberDetailDto.setAddr2(request.getParameter("addr2"));
-			memberDetailDto.setTel1(request.getParameter("tel1"));
-			memberDetailDto.setTel2(request.getParameter("tel2"));
-			memberDetailDto.setTel3(request.getParameter("tel3"));
-			int cnt = memberService.register(memberDetailDto);
-			if (cnt != 0) {
-				path = "/join/registerok.jsp";
-				request.setAttribute("userInfo", memberDetailDto);
-				flag = true;
+			MemberDetailDto mddto = new MemberDetailDto();
+			mddto.setId(request.getParameter("id"));
+			mddto.setName(request.getParameter("name"));
+			mddto.setPass(request.getParameter("pass"));
+			mddto.setEmail1(request.getParameter("email1"));
+			mddto.setEmail2(request.getParameter("email2"));
+			mddto.setZip1(request.getParameter("zip1"));
+			mddto.setZip2(request.getParameter("zip2"));
+			mddto.setAddr1(request.getParameter("addr1"));
+			mddto.setAddr2(request.getParameter("addr2"));
+			mddto.setTel1(request.getParameter("tel1"));
+			mddto.setTel2(request.getParameter("tel2"));
+			mddto.setTel3(request.getParameter("tel3"));
+			int cnt = memberService.register(mddto);
+			if(cnt !=0) {
+				path="/join/registerok.jsp";
+				request.setAttribute("userinfo", mddto);
+				flag= true;
 			} else {
-				path = "/join/registerfail.jsp";
+				path="/join/registerfail.jsp";
 			}
 		} else if ("login".equals(act)) {
 			String id = request.getParameter("id");
 			String pass = request.getParameter("pass");
-			MemberDto memberDto = memberService.login(id, pass);
-			if (memberDto != null) {
-
-				//////////////////// Cookie ///////////////////////
+			MemberDto mdto= memberService.login(id, pass);
+			if(mdto != null) {
 				String idsv = request.getParameter("idsv");
-				if ("idsave".equals(idsv)) {// 아이디저장 체크
-					Cookie cookie = new Cookie("kid_sid", id);
-					cookie.setMaxAge(60 * 60 * 24 * 365);
+				if("idsave".equals(idsv)){ //아이디저장 체크
+					Cookie cookie = new Cookie("kitri_sid", id);
+					cookie.setMaxAge(60*60*24*365*1000);
 					cookie.setPath(root);
-
 					response.addCookie(cookie);
-					// Cookie cookie2 = new Cookie("kid_spwd", pass);
-					// cookie2.setMaxAge(60*60*24*365);
-					// cookie2.setPath(root);
-					//
-					// response.addCookie(cookie2);
-				} else {// 아이디저장 체크X
-					Cookie cookie[] = request.getCookies();
-					if (cookie != null) {
-						int len = cookie.length;
-						for (int i = 0; i < len; i++) {
-							if ("kid_sid".equals(cookie[i].getName())) {
-								cookie[i].setMaxAge(0);
-								cookie[i].setPath(root);
-								response.addCookie(cookie[i]);
-								break;
-							}
-						}
-					}
+				} else { //아이디저장 체크 해제
+				    Cookie cookie[] = request.getCookies();
+				    if(cookie !=null) {
+				   	 	int len = cookie.length;
+				    	for(int i=0;i<len;i++) {
+				    		if("kitri_sid".equals(cookie[i].getName())) {
+				    			cookie[i].setMaxAge(0);
+				    			cookie[i].setPath(root);
+				    			response.addCookie(cookie[i]);
+				    			
+				    			break;
+				    		}
+				    	}
+				    }
 				}
-				//////////////////// Cookie ///////////////////////
-
-				//////////////////// session ///////////////////////
+				
 				HttpSession session = request.getSession();
-				session.setAttribute("loginInfo", memberDto);
-				//////////////////// session ///////////////////////
-
-				path = "/login/loginok.jsp";
-				// request.setAttribute("loginInfo", memberDto);
-				// flag = true;
+				session.setAttribute("loginInfo", mdto);
+				
+				path="/login/loginok.jsp";
+//				request.setAttribute("loginInfo", mdto);
+//				flag=true;
 			} else {
-				path = "/login/loginfail.jsp";
+				path="/login/loginfail.jsp";
 			}
 		} else if ("logout".equals(act)) {
 			HttpSession session = request.getSession();
-			// session.setAttribute("loginInfo", null);
-			// session.removeAttribute("loginInfo");
-			session.invalidate();
-
+//			session.setAttribute("loginInfo", null);
+//			session.removeAttribute("loginInfo");
+			session.invalidate(); //초기화,세션안의 정보 모두제거 주
 			path = "/login/login.jsp";
+			
 		} else if ("mvmodify".equals(act)) {
-
-			path = "/join/modify.jsp";
+		    MemberDto mdto = (MemberDto) request.getSession().getAttribute("loginInfo");
+//			HttpSession session = request.getSession();
+//			MemberDto mdto = (MemberDto) session.getAttribute("loginInfo");
+		    if(mdto!=null) {
+				String id = mdto.getId();
+				MemberDetailDto mmdto= memberService.getMember(id);
+				if(mmdto!=null) {
+					path= "/join/modify.jsp";
+					request.setAttribute("modify", mmdto);
+					flag=true;	
+					
+				} 
+		    } else {	
+				path= "/login/login.jsp";
+				
+			}
 		} else if ("modify".equals(act)) {
-
+		    MemberDto mdto = (MemberDto) request.getSession().getAttribute("loginInfo");
+		    if(mdto!=null) {
+			MemberDetailDto mddto = new MemberDetailDto();
+			mddto.setId(mdto.getId());
+			mddto.setPass(request.getParameter("pass"));
+			mddto.setEmail1(request.getParameter("email1"));
+			mddto.setEmail2(request.getParameter("email2"));
+			mddto.setZip1(request.getParameter("zip1"));
+			mddto.setZip2(request.getParameter("zip2"));
+			mddto.setAddr1(request.getParameter("addr1"));
+			mddto.setAddr2(request.getParameter("addr2"));
+			mddto.setTel1(request.getParameter("tel1"));
+			mddto.setTel2(request.getParameter("tel2"));
+			mddto.setTel3(request.getParameter("tel3"));
+			int cnt = memberService.modify(mddto);
+				if(cnt !=0) {
+					path="/join/modifyok.jsp";
+					request.setAttribute("modifyinfo", mddto);
+					flag= true;
+				}
+			} else {
+				path="/join/modifyfail.jsp";
+			}
 		} else if ("delete".equals(act)) {
-
+		    MemberDto mdto = (MemberDto) request.getSession().getAttribute("loginInfo");
+		    String id =mdto.getId();
+			int cnt = memberService.delete(id);
+			if(cnt!=0){
+				path="/join/deleteok.jsp";
+			} else {
+				path="/join/deletefail.jsp";
+			}
 		} else if ("maillist".equals(act)) {
 			path = "/mail/maillist.jsp";
-		}
-
+		} 
 		if (flag) {
 			RequestDispatcher disp = request.getRequestDispatcher(path);
 			disp.forward(request, response);
@@ -152,20 +177,7 @@ public class MemberController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("EUC-KR");
-		doGet(request, response);
+		doGet(request,response);
 	}
 
 }
-
-/*
- * * Cookie & Session 1. Cookie : client String(*.txt file) Cookie cookie = new
- * Cookie(S, S); cookie.setMaxAge(60*60*24*365*10);//만료날짜
- * cookie.setDomain("www.naver.com"); cookie.setPath("/membermvc");
- * 
- * response.addCookie(cookie);
- * 
- * 
- * 2. session(HttpSession) : server Object(memory)
- * 
- * 
- */

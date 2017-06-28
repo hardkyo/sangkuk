@@ -9,12 +9,11 @@ public interface MemberDao {
 
 	int idCheck(String id);
 	List<ZipDto> zipSearch(String dong);
-	int register(MemberDetailDto memberDetailDto);
+	int register(MemberDetailDto mddto);
 	
 	MemberDto login(Map<String, String> map);
 	
 	MemberDetailDto getMember(String id);
-	int modify(MemberDetailDto memberDetailDto);
+	int modify(MemberDetailDto mddto);
 	int delete(String id);
-	
 }

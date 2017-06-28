@@ -2,16 +2,11 @@
     pageEncoding="EUC-KR"%>
 <%
 String root = request.getContextPath();
-String ua = request.getHeader("User-Agent");
-System.out.println(ua);
-if(ua.contains("Android")) {
-	System.out.println("안드로이드로 가라");
-} else if(ua.contains("iPhone")) {
-	System.out.println("아이폰로 가라");
-} else {
-	System.out.println("PC로 가라");
-}
-%>    
+
+%>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -20,8 +15,7 @@ if(ua.contains("Android")) {
 </head>
 <body>
 <center>
-<h3>MVC Pattern을 이용한 &lt;회원가입&gt; &amp; &apos;로그인&quot;</h3>
-<a href="<%=root %>/user?act=mvjoin">회원가입</a><br>
+<a href="<%=root %>/user?act=mvjoin">회원가입</a>
 <a href="<%=root %>/user?act=mvlogin">로그인</a>
 </center>
 </body>

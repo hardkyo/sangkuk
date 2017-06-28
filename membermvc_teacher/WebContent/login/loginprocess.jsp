@@ -1,74 +1,67 @@
-<%@ page 
-	language="java" 
-	contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR" 
-    import="java.sql.*,java.net.*"%>
-<%!
-//2-1. driver loading >> init()
-public void init() {
-	try{
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-	}catch(Exception e) {
-		e.printStackTrace();
-	}
-}
-%>
+<%@page import="java.net.URLEncoder"%>
+<%@ page language="java" contentType="text/html; charset=EUC-KR"
+	pageEncoding="EUC-KR" import="java.sql.*"%>
+
+<%!//드라이버로딩 init()
+	public void init() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+		} catch (Exception e) {
+
+		}
+	}%>
+	
 <%
 String root = request.getContextPath();
 
-//*1. data get
-//parameter 한글인코딩
-request.setCharacterEncoding("EUC-KR");
-//id
-String id = request.getParameter("id");
-//pass
-String pass = request.getParameter("pass");
 
-//*2. db select
-Connection conn = null;
-Statement stmt = null;
-ResultSet rs = null;
-String name = null;
-try {
-//2-2. Connection 생성
-	conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.18.28:1521:orcl", "kitri", "kitri");	
-//2-3. select sql 작성
-	String sql = "";
-	sql += "select name \n";
-	sql += "from member \n";
-	sql += "where id='" + id + "' and pass='" + pass + "'";
-//2-3. Statement 생성
-	stmt = conn.createStatement();
-//2-4. select 실행. >> ResultSet생성
-	rs = stmt.executeQuery(sql);
-//2-5. next() >> 단독, if vvv, while
-	if(rs.next()) {
-		//2-6. name	get
-		name = rs.getString("name");
-	}
+	//get
+	//인코딩
+	request.setCharacterEncoding("EUC-KR");
+	//name
+	String id = request.getParameter("id");
+	//pass
+	String pass = request.getParameter("pass");
+	//Connection
+	Connection conn = null;
+	//Sql select
 
-	
-} catch(Exception e) {
-	e.printStackTrace();
-} finally {
+	//Statement
+	Statement stmt = null;
+	//ResultSet
+	ResultSet rs = null;
+	String name = null;
 	try {
-//2-7. rs, stmt, conn close << finally
-		if(rs != null)
-			rs.close();
-		if(stmt != null)
-			stmt.close();
-		if(conn != null)
-			conn.close();
-	} catch (SQLException e) {
-		e.printStackTrace();
+		conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.18.28:1521:orcl", "kitri", "kitri");
+		stmt = conn.createStatement();
+		String sql = "select name from member where id='" + id + "' and pass='" + pass + "'";
+		System.out.print(sql);
+		rs = stmt.executeQuery(sql);
+		if (rs.next()) {
+			name = rs.getString("name");
+		}
+
+	} catch (Exception e) {
+
+	} finally {
+		try {
+			if (rs != null)
+				rs.close();
+			if (stmt != null)
+				stmt.close();
+			if (conn != null)
+				conn.close();
+		} catch (Exception e) {
+
+		}
 	}
-}
+	//re.next
+	//name=rs.getString
+	//finally
 
-
-//* 3. response page
-if(name != null) {
-	response.sendRedirect(root + "/login/loginok.jsp?name=" + URLEncoder.encode(name, "EUC-KR"));
-} else {
-	response.sendRedirect(root + "/login/loginfail.jsp");
-}
+	if (name != null) {
+		response.sendRedirect(root+"/login/loginok.jsp?name="+URLEncoder.encode(name,"EUC-KR"));
+	} else {
+		response.sendRedirect(root+"/login/loginfail.jsp");
+	}
 %>

@@ -8,12 +8,12 @@ public interface MemberService {
 
 	int idCheck(String id);
 	List<ZipDto> zipSearch(String dong);
-	int register(MemberDetailDto memberDetailDto);
+	int register(MemberDetailDto mddto);
 	
-	MemberDto login(String id, String pass);
+	MemberDto login(String id,String pass);
 	
 	MemberDetailDto getMember(String id);
-	int modify(MemberDetailDto memberDetailDto);
+	int modify(MemberDetailDto mddto);
 	int delete(String id);
 	
 }

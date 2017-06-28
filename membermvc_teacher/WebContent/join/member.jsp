@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
     pageEncoding="EUC-KR"%>
-<%
-String root = request.getContextPath();
-%> 
+    <%
+    String root = request.getContextPath();
+    %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -11,7 +11,6 @@ String root = request.getContextPath();
 <link rel="stylesheet" href="<%=root %>/css/style.css" type="text/css">
 <script type="text/javascript">
 function join(){
-	
 	if(document.getElementById("id").value == "") {
 		alert("아이디 입력!");
 		return;
@@ -25,7 +24,7 @@ function join(){
 		alert("비밀번호 확인!");
 		return;
 	} else {
-		document.joinform.action = "<%=root %>/user";
+		document.joinform.action = "<%=root%>/user";
 		document.joinform.submit();
 	}
 }
@@ -43,7 +42,7 @@ function openidcheck(){
  <body>
   <center>
 	<h3>회원가입</h3>
-	<form name ="joinform" method="post" action="">
+	<form class="mem" name ="joinform" method="post" action="">
 	<input type="hidden" name="act" value="register">
 	 <table width="780" height="700" cellspacing="4" cellpadding="5">
 			<tr>
@@ -143,17 +142,17 @@ function openidcheck(){
 			</tr>
 			<tr>
 			 <td class="td1">주소<font color="red">*</font></td>
-			 <td class="td3"><input type="text" name="addr1" id="addr1" value="" size="100" readonly="readonly"></td>
+			 <td class="td3"><input type="text" name="addr1" id="addr1" value="" size="100"></td>
 			</tr>
 
 			<tr>
 			 <td class="td2">상세주소<font color="red">*</font></td>
-			 <td class="td4"><input type="text" name="addr2" size="100"></td>
+			 <td class="td4"><input type="text" name="addr2" id="addr2" size="100"></td>
 			</tr>
 
             <tr>
 			 <td class="td1">주로 쓰는 이메일<font color="red">*</font></td>
-			 <td class="td3"><input type="text" name="email1" value="" size="12"> @
+			 <td class="td3"><input type="text" name="email1" id="email1" value="" size="12"> @
 					<!--<input type="text" name="direct" value="" size=12>-->
 	                <select name="email2">
 					<!--<option value="naver.com">직접입력</option>-->
@@ -193,5 +192,3 @@ function openidcheck(){
   </center>
  </body>
 </html>
-
-

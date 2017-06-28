@@ -12,8 +12,8 @@ public class MemberServiceImpl implements MemberService {
 	
 	public MemberServiceImpl() {
 		memberDao = new MemberDaoImpl();
-	}
 	
+	}
 	@Override
 	public int idCheck(String id) {
 		return memberDao.idCheck(id);
@@ -25,13 +25,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int register(MemberDetailDto memberDetailDto) {
-		return memberDao.register(memberDetailDto);
+	public int register(MemberDetailDto mddto) {
+		return memberDao.register(mddto);
 	}
 
 	@Override
 	public MemberDto login(String id, String pass) {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<String,String>();
 		map.put("userid", id);
 		map.put("userpwd", pass);
 		return memberDao.login(map);
@@ -39,20 +39,19 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public MemberDetailDto getMember(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return memberDao.getMember(id);
 	}
 
 	@Override
-	public int modify(MemberDetailDto memberDetailDto) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int modify(MemberDetailDto mddto) {
+
+		return memberDao.modify(mddto);
 	}
 
 	@Override
 	public int delete(String id) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		return memberDao.delete(id);
 	}
 
 }
